@@ -1,4 +1,4 @@
-/*package org.example;
+package org.example;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 
 import java.util.Random;
 
-public class DungeonAdventureGUI extends Application {
+public class EnhancedDungeonAdventureGUI extends Application {
     private int playerHealth = 100;
     private int monsterHealth;
     private int numHealthPotions = 3;
@@ -30,7 +30,7 @@ public class DungeonAdventureGUI extends Application {
 
         mainLayout.getChildren().addAll(statusLabel, playerStatsLabel, exploreButton, viewStatsButton, exitButton);
 
-        // Настраиваем действия кнопок
+        // Настройка действий кнопок
         exploreButton.setOnAction(event -> explore());
         viewStatsButton.setOnAction(event -> showStats());
         exitButton.setOnAction(event -> exitGame(primaryStage));
@@ -53,17 +53,16 @@ public class DungeonAdventureGUI extends Application {
     }
 
     private void fightMonster() {
-        Alert fightAlert = new Alert(Alert.AlertType.INFORMATION);
-        fightAlert.setTitle("Битва с монстром");
-        fightAlert.setHeaderText(null);
-
         while (monsterHealth > 0) {
+            Alert fightAlert = new Alert(Alert.AlertType.CONFIRMATION);
+            fightAlert.setTitle("Битва с монстром");
+            fightAlert.setHeaderText("Ваше здоровье: " + playerHealth + "\nЗдоровье монстра: " + monsterHealth);
+            fightAlert.setContentText("Выберите действие:");
             ButtonType attack = new ButtonType("Атаковать");
             ButtonType heal = new ButtonType("Использовать зелье здоровья");
             ButtonType flee = new ButtonType("Сбежать");
             fightAlert.getButtonTypes().setAll(attack, heal, flee);
 
-            fightAlert.setContentText("Ваше здоровье: " + playerHealth + "\nЗдоровье монстра: " + monsterHealth);
             ButtonType choice = fightAlert.showAndWait().orElse(flee);
 
             if (choice == attack) {
@@ -73,6 +72,8 @@ public class DungeonAdventureGUI extends Application {
                 monsterHealth -= damageToMonster;
                 playerHealth -= damageToPlayer;
 
+                statusLabel.setText("Вы нанесли монстру " + damageToMonster + " урона.\nМонстр атакует и наносит вам " + damageToPlayer + " урона.");
+
                 if (playerHealth <= 0) {
                     gameOver();
                     return;
@@ -81,6 +82,7 @@ public class DungeonAdventureGUI extends Application {
                 if (numHealthPotions > 0) {
                     playerHealth += healthPotionHeal;
                     numHealthPotions--;
+                    statusLabel.setText("Вы использовали зелье здоровья и восстановили " + healthPotionHeal + " здоровья.");
                 } else {
                     statusLabel.setText("У вас больше нет зелий здоровья!");
                 }
@@ -116,4 +118,3 @@ public class DungeonAdventureGUI extends Application {
         launch(args);
     }
 }
-*/
